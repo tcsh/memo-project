@@ -46,3 +46,22 @@
   font-size: 0.8rem;
   color: #888;
 }
+
+.memo-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.memo-actions button {
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.memo-edit-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
