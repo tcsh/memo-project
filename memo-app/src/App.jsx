@@ -1,11 +1,15 @@
 import { useState } from 'react'
 import './App.css'
 
+const CATEGORIES = ['仕事', '個人', 'アイデア']
+
 function App() {
   const [text, setText] = useState('')
+  const [category, setCategory] = useState(CATEGORIES[0])
   const [memos, setMemos] = useState([])
   const [editingId, setEditingId] = useState(null)
   const [editingText, setEditingText] = useState('')
+  const [filterCategory, setFilterCategory] = useState(null)
 
   const handleAdd = () => {
     if (text.trim() === '') return
@@ -13,6 +17,7 @@ function App() {
     const newMemo = {
       id: Date.now(),
       text,
+      category,
       createdAt: new Date(),
     }
     setMemos([newMemo, ...memos])
@@ -63,6 +68,10 @@ function App() {
     }
   }
 
+  const displayedMemos = filterCategory
+    ? memos.filter((memo) => memo.category === filterCategory)
+    : memos
+
   return (
     <div id="app">
       <h1>メモアプリ</h1>
@@ -74,10 +83,34 @@ function App() {
           onKeyDown={handleKeyDown}
           placeholder="メモを入力"
         />
+        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          {CATEGORIES.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
         <button onClick={handleAdd}>追加</button>
       </div>
+      <div className="category-filter">
+        <button
+          className={filterCategory === null ? 'active' : ''}
+          onClick={() => setFilterCategory(null)}
+        >
+          すべて
+        </button>
+        {CATEGORIES.map((c) => (
+          <button
+            key={c}
+            className={filterCategory === c ? 'active' : ''}
+            onClick={() => setFilterCategory(c)}
+          >
+            {c}
+          </button>
+        ))}
+      </div>
       <ul className="memo-list">
-        {memos.map((memo) => (
+        {displayedMemos.map((memo) => (
           <li key={memo.id} className="memo-item">
             {editingId === memo.id ? (
               <>
@@ -96,6 +129,7 @@ function App() {
               </>
             ) : (
               <>
+                <span className="memo-category">{memo.category}</span>
                 <p className="memo-text">{memo.text}</p>
                 <time className="memo-date">
                   {memo.createdAt.toLocaleString('ja-JP')}
