@@ -1,15 +1,31 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 
 const CATEGORIES = ['仕事', '個人', 'アイデア']
+const STORAGE_KEY = 'memos'
+
+const loadMemos = () => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (!stored) return []
+    const parsed = JSON.parse(stored)
+    return parsed.map((memo) => ({ ...memo, createdAt: new Date(memo.createdAt) }))
+  } catch {
+    return []
+  }
+}
 
 function App() {
   const [text, setText] = useState('')
   const [category, setCategory] = useState(CATEGORIES[0])
-  const [memos, setMemos] = useState([])
+  const [memos, setMemos] = useState(loadMemos)
   const [editingId, setEditingId] = useState(null)
   const [editingText, setEditingText] = useState('')
   const [filterCategory, setFilterCategory] = useState(null)
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(memos))
+  }, [memos])
 
   const handleAdd = () => {
     if (text.trim() === '') return
