@@ -21,6 +21,7 @@ function App() {
   const [memos, setMemos] = useState(loadMemos)
   const [editingId, setEditingId] = useState(null)
   const [editingText, setEditingText] = useState('')
+  const [editingCategory, setEditingCategory] = useState(CATEGORIES[0])
   const [filterCategory, setFilterCategory] = useState(null)
 
   useEffect(() => {
@@ -57,6 +58,7 @@ function App() {
   const handleEditStart = (memo) => {
     setEditingId(memo.id)
     setEditingText(memo.text)
+    setEditingCategory(memo.category)
   }
 
   const handleEditCancel = () => {
@@ -69,7 +71,9 @@ function App() {
 
     setMemos(
       memos.map((memo) =>
-        memo.id === editingId ? { ...memo, text: editingText } : memo
+        memo.id === editingId
+          ? { ...memo, text: editingText, category: editingCategory }
+          : memo
       )
     )
     setEditingId(null)
@@ -138,6 +142,16 @@ function App() {
                   onKeyDown={handleEditKeyDown}
                   autoFocus
                 />
+                <select
+                  value={editingCategory}
+                  onChange={(e) => setEditingCategory(e.target.value)}
+                >
+                  {CATEGORIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
                 <div className="memo-actions">
                   <button onClick={handleEditSave}>保存</button>
                   <button onClick={handleEditCancel}>キャンセル</button>
