@@ -16,10 +16,46 @@
   font-size: 1rem;
 }
 
+.memo-form select {
+  padding: 8px 12px;
+  font-size: 1rem;
+}
+
 .memo-form button {
   padding: 8px 16px;
   font-size: 1rem;
   cursor: pointer;
+}
+
+.category-filter {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.category-filter button {
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 999px;
+  background: none;
+  cursor: pointer;
+}
+
+.category-filter button.active {
+  background: #333;
+  color: #fff;
+  border-color: #333;
+}
+
+.memo-category {
+  display: inline-block;
+  padding: 2px 8px;
+  margin-bottom: 8px;
+  font-size: 0.75rem;
+  border-radius: 999px;
+  background: #eee;
+  color: #555;
 }
 
 .memo-list {
